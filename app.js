@@ -11,6 +11,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const Localstrategy = require("passport-local")
 const User = require("./models/user.js");
+const Listing = require("./models/listing.js");
 
 const listingsRoute = require("./routes/listing.js");
 const reviewsRoute = require("./routes/review.js");
@@ -34,10 +35,6 @@ main().then( ()=> {
 }).catch((err)=>{
     console.log(err);
 })
-
-app.get("/", (req, res) => {
-  res.render("./listings/index.ejs");
-});
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
@@ -73,16 +70,21 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next) => {
+    res.locals.currUser = req.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
-    res.locals.currUser = req.user;
-    res.locals.redirectUrl = req.user;
+    res.locals.redirectUrl = req.originalUrl;
     next();
 })
 
 app.use("/listings",listingsRoute);
 app.use("/listings/:id/reviews",reviewsRoute);
 app.use("/users",usersRoute);
+
+app.get("/", async (req, res) => {
+  const allListings = await Listing.find({});
+  res.render("listings/index", { allListings });
+});
 
 // app.all("*",(req,res,next) => {
 //     next(new ExpressError(404,"Page not Found!"));
