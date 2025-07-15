@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "24.1.0"
+  },
   "name": "airbnb-project-fullstack",
   "version": "1.0.0",
   "description": "",

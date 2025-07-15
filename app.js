@@ -35,6 +35,10 @@ main().then( ()=> {
     console.log(err);
 })
 
+app.get("/", (req, res) => {
+  res.render("./listings/index.ejs");
+});
+
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto:{
