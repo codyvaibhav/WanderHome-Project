@@ -11,7 +11,7 @@ module.exports.signup = async (req,res,next) => {
         const registeredUser = await User.register(newUser, password);
         req.logIn(registeredUser, (err) => {
             if (err) return next(err);
-            req.flash("success", "Welcome to Wonderlust!");
+            req.flash("success", "Welcome to WonderHome!");
             res.redirect("/listings");
           });
     }catch(err){
@@ -25,7 +25,7 @@ module.exports.renderLoginform = (req,res) => {
 }
 
 module.exports.login = async (req,res) => {
-    req.flash("success", "Welcome back to Wonderlust");
+    req.flash("success", "Welcome back to WonderHome");
     let redirectUrl = res.locals.redirectUrl || "/listings";
     res.redirect(redirectUrl);
 }
